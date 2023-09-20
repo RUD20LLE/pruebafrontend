@@ -5,7 +5,7 @@ function TogglePage() {
 
   const fetchState = async () => {
     try {
-      const response = await fetch('http://localhost:4000/toggle');
+      const response = await fetch('http://localhost:4000/toggle/');
       const data = await response.json();
       setIsOn(data.isOn);
     } catch (error) {
@@ -15,12 +15,13 @@ function TogglePage() {
 
   const toggleState = async () => {
     try {
-      await fetch('http://localhost:4000/toggle', { method: 'POST' });
-      setIsOn((prev) => !prev);
+      const response = await fetch('http://localhost:4000/toggle/', { method: 'POST' });
+      const data = await response.json();
+      setIsOn(data.isOn);
     } catch (error) {
       console.error('Error toggling state', error);
     }
-  };
+  };  
 
   useEffect(() => {
     fetchState();
