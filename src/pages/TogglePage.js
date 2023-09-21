@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 function TogglePage() {
   const [isOn, setIsOn] = useState(false);
+  const token = localStorage.getItem('jwt_token');
 
   const fetchState = async () => {
     try {
-      const response = await fetch('http://localhost:4000/toggle/');
+      const response = await fetch('http://localhost:4000/toggle', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setIsOn(data.isOn);
     } catch (error) {
@@ -15,7 +20,12 @@ function TogglePage() {
 
   const toggleState = async () => {
     try {
-      const response = await fetch('http://localhost:4000/toggle/', { method: 'POST' });
+      const response = await fetch('http://localhost:4000/toggle', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       setIsOn(data.isOn);
     } catch (error) {
@@ -35,4 +45,3 @@ function TogglePage() {
 }
 
 export default TogglePage;
-

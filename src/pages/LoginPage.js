@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:4000/auth/login/', { // Quita la barra al final
+      const response = await fetch('http://localhost:4000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -17,9 +17,10 @@ function LoginPage() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
-      if (data) {
+      if (data && data.access_token) {
         console.log('Inicio de sesión exitoso', data);
-        navigate('/toggle'); // Redirige a la página de toggle después de un inicio de sesión exitoso
+        localStorage.setItem('jwt_token', data.access_token); // Almacena el token
+        navigate('/toggle');
       } else {
         console.log('Error en el inicio de sesión');
       }
@@ -55,4 +56,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
